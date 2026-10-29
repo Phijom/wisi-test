@@ -2,8 +2,8 @@ import { createServerFn } from '@tanstack/react-start'
 import { notFound } from '@tanstack/react-router'
 import {
   customerIdParam,
-  customerSchema,
-  quotationSearchSchema,
+  customer_Schema,
+  quotationSearch,
   quotationsResponseSchema,
   type Quotation,
 } from '../lib/schemas'
@@ -16,7 +16,7 @@ export const getCustomer = createServerFn({ method: 'GET' })
   .handler(async ({ data }) => {
     const customer = customers.find((c) => c.id === data.customerId)
     if (!customer) throw notFound()
-    return customerSchema.parse(customer)
+    return customer_Schema.parse(customer)
   })
 
 const compare = (key: keyof Quotation) => (a: Quotation, b: Quotation) => {
@@ -26,7 +26,7 @@ const compare = (key: keyof Quotation) => (a: Quotation, b: Quotation) => {
 }
 
 export const getQuotations = createServerFn({ method: 'GET' })
-  .validator(quotationSearchSchema.merge(customerIdParam))
+  .validator(quotationSearch.merge(customerIdParam))
   .handler(async ({ data }) => {
     const needle = data.q.trim().toLowerCase()
     const matches = quotations
