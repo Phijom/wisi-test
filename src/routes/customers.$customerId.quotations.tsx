@@ -1,11 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { zodValidator } from '@tanstack/zod-adapter'
 import { ArrowUpDown, ChevronLeft, ChevronRight, Eye, Plus, Search } from 'lucide-react'
-import { quotationSearchSchema, sortKeys, type QuotationSearch } from '../lib/schemas'
+import { quotationSearch, sortKeys, type QuotationSearch } from '../lib/schemas'
 import { getQuotations } from '../server/api'
 
 export const Route = createFileRoute('/customers/$customerId/quotations')({
-  validateSearch: zodValidator(quotationSearchSchema),
+  validateSearch: zodValidator(quotationSearch),
   loaderDeps: ({ search }) => search,
   loader: ({ params, deps }) => getQuotations({ data: { ...deps, customerId: params.customerId } }),
   component: QuotationsTab,

@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { fallback } from '@tanstack/zod-adapter'
 
-export const customerSchema = z.object({
+export const customer_Schema = z.object({
   id: z.string().regex(/^BA-\d{8}$/),
   firstName: z.string().min(1),
   lastName: z.string().min(1),
@@ -16,7 +16,7 @@ export const customerSchema = z.object({
     at: z.string().datetime(),
   }),
 })
-export type Customer = z.infer<typeof customerSchema>
+export type Customer = z.infer<typeof customer_Schema>
 
 export const quotationSchema = z.object({
   id: z.string().regex(/^QT\d{10}$/),
@@ -30,14 +30,14 @@ export type Quotation = z.infer<typeof quotationSchema>
 export const sortKeys = ['id', 'plan', 'premium', 'date'] as const
 
 /** URL search params for the quotations tab. `fallback` keeps bad URLs from throwing. */
-export const quotationSearchSchema = z.object({
+export const quotationSearch = z.object({
   q: fallback(z.string(), '').default(''),
   status: fallback(z.enum(['all', 'paid', 'unpaid']), 'all').default('all'),
   sort: fallback(z.enum(sortKeys), 'date').default('date'),
   dir: fallback(z.enum(['asc', 'desc']), 'desc').default('desc'),
   page: fallback(z.number().int().min(1), 1).default(1),
 })
-export type QuotationSearch = z.infer<typeof quotationSearchSchema>
+export type QuotationSearch = z.infer<typeof quotationSearch>
 
 export const quotationsResponseSchema = z.object({
   rows: z.array(quotationSchema),
